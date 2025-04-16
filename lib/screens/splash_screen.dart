@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'home_screen.dart';
 import 'dart:async';
 
@@ -8,15 +9,25 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final FlutterTts flutterTts = FlutterTts();
+
   @override
   void initState() {
     super.initState();
+    _speakWelcome();
     Timer(Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => HomeScreen()),
       );
     });
+  }
+
+  Future<void> _speakWelcome() async {
+    await flutterTts.setLanguage("en-US");
+    await flutterTts.setSpeechRate(0.5); // Slow and clear
+    await flutterTts.setPitch(1.0);
+    await flutterTts.speak("Opening SmartVision App");
   }
 
   @override
@@ -27,14 +38,12 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Logo Image
             Image.asset(
               'assets/images/logo3.png',
               height: 120,
               width: 120,
             ),
             SizedBox(height: 10),
-            // App Title
             Text(
               'SmartVision',
               style: TextStyle(
@@ -45,7 +54,6 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             SizedBox(height: 10),
-            // Slogan
             Text(
               'Beyond Eyes.',
               style: TextStyle(
