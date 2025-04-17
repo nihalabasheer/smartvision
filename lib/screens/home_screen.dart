@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:camera/camera.dart';
+import 'detection_screen.dart'; // Import your DetectionScreen
 
 class HomeScreen extends StatefulWidget {
+  final List<CameraDescription> cameras;
+
+  const HomeScreen({required this.cameras}); // Add cameras here
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -19,15 +25,13 @@ class _HomeScreenState extends State<HomeScreen> {
     _speakOptions();
   }
 
-  // Method to speak the available options
   void _speakOptions() async {
     await flutterTts.setLanguage("en-US");
     await flutterTts.setPitch(1);
-    await flutterTts.setSpeechRate(0.5); // Slow down the speech output
+    await flutterTts.setSpeechRate(0.5);
     await flutterTts.speak("You have three available options: Detection, Call Help, and Settings. Click the 'Tap to Speak' button at the bottom to select your choice.");
   }
 
-  // Method to start listening for voice commands
   void _startListening() async {
     bool available = await _speech.initialize();
     if (available) {
@@ -45,17 +49,19 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // Method to handle recognized voice command
   void _handleVoiceCommand(String command) {
     if (command.toLowerCase().contains("detection")) {
       flutterTts.speak("Opening Detection screen.");
-      // Navigate to Detection screen here (or add your detection logic)
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DetectionScreen(cameras: widget.cameras),
+        ),
+      );
     } else if (command.toLowerCase().contains("call help")) {
       flutterTts.speak("Calling for help.");
-      // Trigger emergency logic here
     } else if (command.toLowerCase().contains("settings")) {
       flutterTts.speak("Opening Settings.");
-      // Navigate to Settings screen here
     } else {
       flutterTts.speak("Sorry, I didn't recognize that command. Please say 'Detection', 'Call Help', or 'Settings'.");
     }
@@ -90,7 +96,12 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Detection',
               onTap: () {
                 flutterTts.speak("Opening Detection screen.");
-                // Navigate to Detection screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetectionScreen(cameras: widget.cameras),
+                  ),
+                );
               },
             ),
             SizedBox(height: 25),
@@ -99,7 +110,6 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Call Help',
               onTap: () {
                 flutterTts.speak("Calling for help.");
-                // Trigger emergency logic
               },
             ),
             SizedBox(height: 25),
@@ -108,18 +118,17 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Settings',
               onTap: () {
                 flutterTts.speak("Opening Settings.");
-                // Navigate to Settings screen
               },
             ),
-            Spacer(),  // Push the button to the bottom
+            Spacer(),
             ElevatedButton(
               onPressed: _startListening,
               child: Text(
                 _isListening ? "Listening..." : "Tap to Speak",
-                style: TextStyle(fontSize: 30), // Increased size for the button
+                style: TextStyle(fontSize: 30),
               ),
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 80), // Bigger button size
+                minimumSize: Size(double.infinity, 80),
                 backgroundColor: Colors.blueAccent,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(

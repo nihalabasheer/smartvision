@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:camera/camera.dart';
 import 'screens/splash_screen.dart';
 
-void main() {
+List<CameraDescription> cameras = [];
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
   runApp(SmartVisionApp());
 }
 
@@ -13,10 +18,8 @@ class SmartVisionApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: SplashScreen(),
+      home: SplashScreen(cameras: cameras),  // Pass cameras to SplashScreen
       debugShowCheckedModeBanner: false,
     );
   }
 }
-
-

@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'home_screen.dart';
 import 'dart:async';
+import 'package:camera/camera.dart';  // Import CameraDescription
 
 class SplashScreen extends StatefulWidget {
+  final List<CameraDescription> cameras;  // Add cameras here
+
+  // Modify constructor to accept cameras
+  SplashScreen({required this.cameras});  // Accept cameras in the constructor
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -18,7 +24,9 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => HomeScreen()),
+        MaterialPageRoute(
+          builder: (_) => HomeScreen(cameras: widget.cameras),  // Pass cameras here
+        ),
       );
     });
   }
