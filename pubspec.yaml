@@ -12,7 +12,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  tflite_v2:
+    path: ./myplugins/tflite_v2-1.0.0
 
   cupertino_icons: ^1.0.8
   flutter_tts: ^3.6.3
@@ -32,4 +33,5 @@ flutter:
 
   assets:
     - assets/images/logo3.png
-
+    - assets/models/model.tflite
+    - assets/models/labels.txt
