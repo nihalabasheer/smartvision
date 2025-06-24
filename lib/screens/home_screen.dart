@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:camera/camera.dart';
-import 'detection_screen.dart'; // Import your DetectionScreen
+import 'detection_screen.dart';
+import 'settings_screen.dart';
+import 'call_help.dart'; // ⬅️ Make sure this file exists
 
 class HomeScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
 
-  const HomeScreen({required this.cameras}); // Add cameras here
+  const HomeScreen({required this.cameras});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -29,15 +31,14 @@ class _HomeScreenState extends State<HomeScreen> {
     await flutterTts.setLanguage("en-US");
     await flutterTts.setPitch(1);
     await flutterTts.setSpeechRate(0.5);
-    await flutterTts.speak("You have three available options: Detection, Call Help, and Settings. Click the 'Tap to Speak' button at the bottom to select your choice.");
+    await flutterTts.speak(
+        "You have three available options: Detection, Call Help, and Settings. Click the 'Tap to Speak' button at the bottom to select your choice.");
   }
 
   void _startListening() async {
     bool available = await _speech.initialize();
     if (available) {
-      setState(() {
-        _isListening = true;
-      });
+      setState(() => _isListening = true);
       _speech.listen(onResult: (result) {
         setState(() {
           _recognizedText = result.recognizedWords;
@@ -50,7 +51,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _handleVoiceCommand(String command) {
-    if (command.toLowerCase().contains("detection")) {
+    final cmd = command.toLowerCase();
+
+    // Stop listening and reset
+    _speech.stop();
+    setState(() => _isListening = false);
+
+    if (cmd.contains("detection")) {
       flutterTts.speak("Opening Detection screen.");
       Navigator.push(
         context,
@@ -58,12 +65,25 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context) => DetectionScreen(cameras: widget.cameras),
         ),
       );
-    } else if (command.toLowerCase().contains("call help")) {
-      flutterTts.speak("Calling for help.");
-    } else if (command.toLowerCase().contains("settings")) {
+    } else if (cmd.contains("call help") || cmd.contains("call")) {
+      flutterTts.speak("Opening Call Help screen.");
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CallHelpScreen(), // ⬅️ Replace with your actual call help widget
+        ),
+      );
+    } else if (cmd.contains("settings")) {
       flutterTts.speak("Opening Settings.");
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SettingsScreen(),
+        ),
+      );
     } else {
-      flutterTts.speak("Sorry, I didn't recognize that command. Please say 'Detection', 'Call Help', or 'Settings'.");
+      flutterTts.speak(
+          "Sorry, I didn't recognize that command. Please say Detection, Call Help, or Settings.");
     }
   }
 
@@ -72,7 +92,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('SmartVision', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+        title: Text(
+          'SmartVision',
+          style: TextStyle(
+              color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         elevation: 0,
         toolbarHeight: 90,
@@ -99,7 +123,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DetectionScreen(cameras: widget.cameras),
+                    builder: (context) =>
+                        DetectionScreen(cameras: widget.cameras),
                   ),
                 );
               },
@@ -109,7 +134,13 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icons.phone,
               label: 'Call Help',
               onTap: () {
-                flutterTts.speak("Calling for help.");
+                flutterTts.speak("Opening Call Help screen.");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CallHelpScreen(),
+                  ),
+                );
               },
             ),
             SizedBox(height: 25),
@@ -118,11 +149,17 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Settings',
               onTap: () {
                 flutterTts.speak("Opening Settings.");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SettingsScreen(),
+                  ),
+                );
               },
             ),
             Spacer(),
             ElevatedButton(
-              onPressed: _startListening,
+              onPressed: _isListening ? null : _startListening,
               child: Text(
                 _isListening ? "Listening..." : "Tap to Speak",
                 style: TextStyle(fontSize: 30),
@@ -162,7 +199,8 @@ class HomeButton extends StatelessWidget {
     return ElevatedButton.icon(
       onPressed: onTap,
       icon: Icon(icon, size: 50),
-      label: Text(label, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+      label: Text(label,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
       style: ElevatedButton.styleFrom(
         minimumSize: Size(double.infinity, 70),
         backgroundColor: Colors.blueAccent,
