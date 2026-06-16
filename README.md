@@ -1,4 +1,4 @@
-# SmartVision 👓
+# SmartVision 
 
 **SmartVision** is an AI-powered accessibility app designed for blind and visually impaired users. It uses a fine-tuned YOLOv8 model to detect objects in real time and announce them through voice feedback, helping users better understand and navigate their surroundings.
 
