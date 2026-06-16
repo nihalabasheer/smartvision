@@ -24,7 +24,7 @@ The app works completely offline, supports voice commands, provides safety alert
 
 ## 🎯 Use Cases
 
-- Identifying nearby objects such as chairs, doors, bottles, and vehicles
+- Identifying nearby objects that can block the users.
 - Assisting visually impaired users in unfamiliar environments
 - Providing audio awareness of surroundings while moving independently
 - Alerting users to potential obstacles or hazards
