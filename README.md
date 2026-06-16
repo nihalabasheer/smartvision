@@ -1,16 +1,47 @@
-# smartvision
+# SmartVision 👓
 
-A new Flutter project.
+**SmartVision** is an AI-powered accessibility app designed for blind and visually impaired users. It uses a fine-tuned YOLOv8 model to detect objects in real time and announce them through voice feedback, helping users better understand and navigate their surroundings.
 
-## Getting Started
+The app works completely offline, supports voice commands, provides safety alerts through vibration, and includes an emergency "Call for Help" feature.
 
-This project is a starting point for a Flutter application.
+## ✨ Features
 
-A few resources to get you started if this is your first Flutter project:
+- 🎯 Real-time object detection using YOLOv8
+- 🔊 Voice announcements for detected objects
+- 🎙️ Hands-free voice command support
+- 📴 Fully offline operation
+- 📳 Vibration alerts in potentially dangerous situations
+- 🆘 Emergency assistance and call-for-help feature
+- ♿ Accessibility-first design for visually impaired users
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🛠️ Technologies Used
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter
+- Dart
+- TensorFlow Lite
+- YOLOv8
+- Flutter TTS
+
+## 🎯 Use Cases
+
+- Identifying nearby objects such as chairs, doors, bottles, and vehicles
+- Assisting visually impaired users in unfamiliar environments
+- Providing audio awareness of surroundings while moving independently
+- Alerting users to potential obstacles or hazards
+- Quickly contacting trusted contacts during emergencies
+
+## 🚀 Getting Started
+
+```bash
+git clone https://github.com/nihalabasheer/smartvision.git
+cd smartvision
+flutter pub get
+flutter run
+```
+
+## 🌟 Vision
+
+SmartVision aims to make everyday navigation safer, easier, and more independent for visually impaired individuals through accessible AI technology.
+
+---
+Built with accessibility at its core ❤️
